@@ -37,13 +37,6 @@ var ReactLayerPlus = require('react-layer-plus');
 <ReactLayerPlus>Example</ReactLayerPlus>
 ```
 
-### Properties
-
-### Notes
-
-
-## for ie8 support, pls add es5-shim and es5 sham
-
 ## Development (`src`, `lib` and the build process)
 
 **NOTE:** The source code for the component is in `src`. A transpiled CommonJS version (generated with Babel) is available in `lib` for use with node.js, browserify and webpack. A UMD bundle is also built to `dist`, which can be included without the need for any build system.

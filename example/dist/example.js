@@ -63,7 +63,7 @@ var App = (function (_Component) {
                 _react2['default'].createElement(
                     'pre',
                     { className: 'demo-code' },
-                    '\n* ReactLayer 组件上的事件由组件自己已处理显隐，使用本组件仅需要处理InBody内children上自己业务需要的事件与显隐\n* props.target [string targetId]: layer show by [eventIn] target\n* props.eventIn  {eventName}         show trigger by eventIn\n* props.eventOut {optional eventName} hide trigger by eventOut form element needn\'t eventOut\n* props.show     {optional boolean}\n* props.onPreBlur {callback function}\n* ReactLayer.eventInner {static boolean}   get or set the event trigger by ReactLayer Inner or Outer\n'
+                    '\n* ReactLayer 组件上的事件由组件自己已处理显隐，使用本组件仅需要处理ReactLayer内children上自己业务需要的事件与显隐\n* props.target [string targetId]: layer show by [eventIn] target\n* props.eventIn  {eventName}         show trigger by eventIn\n* props.eventOut {optional eventName} hide trigger by eventOut form element needn\'t eventOut\n* props.show     {optional boolean}\n* props.onPreBlur {callback function}\n* ReactLayer.eventInner {static boolean}   get or set the event trigger by ReactLayer Inner or Outer\n'
                 ),
                 _react2['default'].createElement('br', null),
                 _react2['default'].createElement('hr', null),

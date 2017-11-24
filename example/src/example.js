@@ -29,7 +29,7 @@ class App extends Component {
         return (
             <div className="demo-list clearfix">
 <pre className="demo-code">{`
-* ReactLayer 组件上的事件由组件自己已处理显隐，使用本组件仅需要处理InBody内children上自己业务需要的事件与显隐
+* ReactLayer 组件上的事件由组件自己已处理显隐，使用本组件仅需要处理ReactLayer内children上自己业务需要的事件与显隐
 * props.target [string targetId]: layer show by [eventIn] target
 * props.eventIn  {eventName}         show trigger by eventIn
 * props.eventOut {optional eventName} hide trigger by eventOut form element needn't eventOut

@@ -1,11 +1,11 @@
-# react-datepicker-plus
+# react-layer-plus
 
-__react datepicker for salar and lunar, for props and callback to config, ie8 && ie8+__
+__react layer for salar and lunar, for props and callback to config, ie8 && ie8+__
 __react dependency migrate react from v0.12 to v15.3, then below ie9 is not support__
 
 ## Demo & Examples
 
-Live demo: [https://ccjoe.github.io/react-datepicker-plus](https://ccjoe.github.io/react-datepicker-plus)
+Live demo: [https://ccjoe.github.io/react-layer-plus](https://ccjoe.github.io/react-layer-plus)
 
 To build the examples locally, run:
 
@@ -19,12 +19,12 @@ Then open [`localhost:8800`](http://localhost:8800) in a browser.
 
 ## Installation
 
-The easiest way to use react-datepicker-plus is to install it from NPM and include it in your own React build process (using [Browserify](http://browserify.org), [Webpack](http://webpack.github.io/), etc).
+The easiest way to use react-layer-plus is to install it from NPM and include it in your own React build process (using [Browserify](http://browserify.org), [Webpack](http://webpack.github.io/), etc).
 
-You can also use the standalone build by including `dist/react-datepicker-plus.js` in your page. If you use this, make sure you have already included React, and it is available as a global variable.
+You can also use the standalone build by including `dist/react-layer-plus.js` in your page. If you use this, make sure you have already included React, and it is available as a global variable.
 
 ```
-npm install react-datepicker-plus --save
+npm install react-layer-plus --save
 ```
 
 ## Usage
@@ -32,9 +32,9 @@ npm install react-datepicker-plus --save
 __EXPLAIN USAGE HERE__
 
 ```
-var ReactDatepickerPlus = require('react-datepicker-plus');
+var ReactLayerPlus = require('react-layer-plus');
 
-<ReactDatepickerPlus>Example</ReactDatepickerPlus>
+<ReactLayerPlus>Example</ReactLayerPlus>
 ```
 
 ### Properties
@@ -53,4 +53,4 @@ To build, watch and serve the examples (which will also watch the component sour
 ## License
 
 
-Copyright (c) 2016 ccjoe.
+Copyright (c) 2017 ccjoe.

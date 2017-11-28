@@ -60,9 +60,16 @@ class App extends Component {
 
                 <div className="demo-item">
 					<h5>relate target with Form common element</h5>
-					<span id="commonElement" value={this.state.value}>Common Element</span>
+					<span id="commonElement" value={this.state.value}>Common Element  placement default bottom-left</span>
+                    <style>
+                        {`
+                        .c-layer {
+                            border: 1px solid blue;
+                        }
 
-                    <ReactLayer eventIn="mouseover" eventOut="mouseleave" target='commonElement' show={show}>
+                        `}
+                    </style>
+                    <ReactLayer eventIn="mouseover" eventOut="mouseleave" target='commonElement' show={show} className="c-layer">
                         <div style={{backgroundColor: '#fff', 'border': '1px solid #ccc'}}>
                             <span onClick={this.onClickA.bind(this)}>a</span><br/>
                             <span>b</span><br/>
@@ -72,6 +79,124 @@ class App extends Component {
                     </ReactLayer>
 				</div>
 
+                <div className="demo-item">
+					<h5>placement bottom-right</h5>
+					<span style={{textDecoration: 'underline'}} id="placementElemBR" value={this.state.value}>placement demo</span>
+                    <ReactLayer eventIn="mouseover" eventOut="mouseleave" target='placementElemBR' show={show} className="c-layer" placement="bottom-right">
+                        <div style={{backgroundColor: '#fff', 'border': '1px solid #ccc'}}>
+                         'left' <br/>
+                         'right'<br/>
+                         'top'<br/>
+                         'bottom'<br/>
+                         'left-top'<br/>
+                         'left-bottom'<br/>
+                         'right-top'<br/>
+                         'right-bottom'
+                        </div>
+                    </ReactLayer>
+				</div>
+
+                <div className="demo-item">
+					<h5>placement top-left</h5>
+					<span style={{textDecoration: 'underline'}} id="placementElemTL" value={this.state.value}>placement demo</span>
+                    <ReactLayer target='placementElemTL'  eventIn="mouseover" eventOut="mouseleave" show={show} className="c-layer" placement="top-left">
+                        <div style={{backgroundColor: '#fff', 'border': '1px solid #ccc'}}>
+                         'left' <br/>
+                         'right'<br/>
+                         'top'<br/>
+                         'bottom'<br/>
+                         'left-top'<br/>
+                         'left-bottom'<br/>
+                         'right-top'<br/>
+                         'right-bottom'
+                        </div>
+                    </ReactLayer>
+				</div>
+
+                <div className="demo-item">
+					<h5>placement top-right</h5>
+					<span style={{textDecoration: 'underline'}} id="placementElemTR" value={this.state.value}>placement demo</span>
+                    <ReactLayer target='placementElemTR'  eventIn="mouseover" eventOut="mouseleave" show={show} className="c-layer" placement="top-right">
+                        <div style={{backgroundColor: '#fff', 'border': '1px solid #ccc'}}>
+                         'left' <br/>
+                         'right'<br/>
+                         'top'<br/>
+                         'bottom'<br/>
+                         'left-top'<br/>
+                         'left-bottom'<br/>
+                         'right-top'<br/>
+                         'right-bottom'
+                        </div>
+                    </ReactLayer>
+				</div>
+
+                <div className="demo-item">
+					<h5>placement left</h5>
+					<span style={{textDecoration: 'underline'}} id="placementElemLeft" value={this.state.value}>placement demo</span>
+                    <ReactLayer target='placementElemLeft'  eventIn="mouseover" eventOut="mouseleave" show={show} className="c-layer" placement="left">
+                        <div style={{backgroundColor: '#fff', 'border': '1px solid #ccc'}}>
+                         'left' <br/>
+                         'right'<br/>
+                         'top'<br/>
+                         'bottom'<br/>
+                         'left-top'<br/>
+                         'left-bottom'<br/>
+                         'right-top'<br/>
+                         'right-bottom'
+                        </div>
+                    </ReactLayer>
+				</div>
+
+                <div className="demo-item">
+					<h5>placement right</h5>
+					<span style={{textDecoration: 'underline'}} id="placementElemRight" value={this.state.value}>placement demo</span>
+                    <ReactLayer target='placementElemRight'  eventIn="mouseover" eventOut="mouseleave" show={show} className="c-layer" placement="right">
+                        <div style={{backgroundColor: '#fff', 'border': '1px solid #ccc'}}>
+                         'left' <br/>
+                         'right'<br/>
+                         'top'<br/>
+                         'bottom'<br/>
+                         'left-top'<br/>
+                         'left-bottom'<br/>
+                         'right-top'<br/>
+                         'right-bottom'
+                        </div>
+                    </ReactLayer>
+				</div>
+
+                <div className="demo-item">
+					<h5>placement top</h5>
+					<span style={{textDecoration: 'underline'}} id="placementElemTop" value={this.state.value}>placement demo</span>
+                    <ReactLayer target='placementElemTop'  eventIn="mouseover" eventOut="mouseleave" show={show} className="c-layer" placement="top">
+                        <div style={{backgroundColor: '#fff', 'border': '1px solid #ccc'}}>
+                         'left' <br/>
+                         'right'<br/>
+                         'top'<br/>
+                         'bottom'<br/>
+                         'left-top'<br/>
+                         'left-bottom'<br/>
+                         'right-top'<br/>
+                         'right-bottom'
+                        </div>
+                    </ReactLayer>
+				</div>
+
+                <div className="demo-item">
+					<h5>placement bottom</h5>
+					<span style={{textDecoration: 'underline'}} id="placementElemBottom" value={this.state.value}>placement demo</span>
+                    <ReactLayer target='placementElemBottom'  eventIn="mouseover" eventOut="mouseleave" show={show} className="c-layer" placement="bottom">
+                        <div style={{backgroundColor: '#fff', 'border': '1px solid #ccc'}}>
+                         'left' <br/>
+                         'right'<br/>
+                         'top'<br/>
+                         'bottom'<br/>
+                         'left-top'<br/>
+                         'left-bottom'<br/>
+                         'right-top'<br/>
+                         'right-bottom'
+                        </div>
+                    </ReactLayer>
+				</div>
             </div>
         )
     }

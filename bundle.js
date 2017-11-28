@@ -29,6 +29,18 @@ var mixStyle = function mixStyle(offset) {
     return _extends({ position: 'absolute', zIndex: 100 }, offset);
 };
 
+// Fix for IE8-'s Element.getBoundingClientRect()
+if ('TextRectangle' in window && !('width' in TextRectangle.prototype)) {
+    Object.defineProperties(TextRectangle.prototype, {
+        'width': { get: function get() {
+                return this.right - this.left;
+            } },
+        'height': { get: function get() {
+                return this.bottom - this.top;
+            } }
+    });
+}
+
 var ReactLayer = (function (_Component) {
     _inherits(ReactLayer, _Component);
 
@@ -37,9 +49,14 @@ var ReactLayer = (function (_Component) {
      * ReactLayer 组件上的事件由组件自己已处理显隐，使用本组件仅需要处理InBody内children上自己业务需要的事件与显隐
      * props.target [string targetId]: layer show by [eventIn] target
      * props.eventIn  {eventName}         show trigger by eventIn
+     * //if eventIn is mouseover, eventOut mouseleave default
+     * //if target is form element ,eventOut is blur default
      * props.eventOut {optional eventName} hide trigger by eventOut form element needn't eventOut
      * props.show     {optional boolean}
      * props.onPreBlur {callback function}
+     * props.onEventIn {callback function}
+     * props.onEventOut {callback function}
+     * props.placement {string} default 'bottom-left'  left right top bottom top-left bottom-left top-right bottom-right
      * ReactLayer.eventInner {static boolean}   get or set the event trigger by ReactLayer Inner or Outer
      */
 
@@ -58,7 +75,7 @@ var ReactLayer = (function (_Component) {
         value: function createBodyWrapper() {
             if (!this.hasBodyWrapper()) {
                 this.popup = document.createElement('div');
-                this.popup.className = this.props.className || 'in-body-wrapper';
+                this.popup.className = 'layer-wrapper';
                 document.body.appendChild(this.popup);
             }
         }
@@ -71,22 +88,37 @@ var ReactLayer = (function (_Component) {
         key: 'componentDidMount',
         value: function componentDidMount() {
             this.createBodyWrapper();
-            if (this.state.show) this.renderLayer();
-            if (!this.props.inline) {
-                this.state.offset.width = this.props.children.clientWidth;
+            this.state.show ? this.renderLayer() : this.removeLayer();
+
+            var _props = this.props;
+            var inline = _props.inline;
+            var eventIn = _props.eventIn;
+            var eventOut = _props.eventOut;
+            var onEventIn = _props.onEventIn;
+            var onEventOut = _props.onEventOut;
+            var children = _props.children;
+
+            if (!inline) {
+                this.state.offset.width = children.clientWidth;
                 this.setState(this.state);
             }
             var that = this;
             var target = that.getTarget();
             if (target) {
-                target.addEventListener(that.props.eventIn, function () {
+                target.addEventListener(eventIn, function () {
+                    onEventIn && onEventIn();
                     that.show(true);
                 });
-                if (that.props.eventIn === 'mouseover') {
-                    target.addEventListener('mouseleave', function () {
+                if (eventIn === 'mouseover') {
+                    target.addEventListener(eventOut || 'mouseleave', function () {
                         that.timeId = setTimeout(function () {
                             that.show(false);
                         }, 200);
+                    });
+                } else if (eventOut) {
+                    target.addEventListener(eventOut, function () {
+                        that.show(false);
+                        onEventOut && onEventOut();
                     });
                 }
                 if (that.targetIsInput(target)) {
@@ -101,7 +133,12 @@ var ReactLayer = (function (_Component) {
     }, {
         key: 'show',
         value: function show(ok) {
-            this.setState({ show: ok, offset: ok ? mixStyle(this.setPosition()) : {} });
+            if (ok) {
+                this.setState({ show: ok, offset: mixStyle(this.setDefaultPos()) });
+                this.setState({ offset: mixStyle(this.setAddtionPos()) });
+            } else {
+                this.setState({ show: false });
+            }
         }
     }, {
         key: 'onMouseOver',
@@ -159,35 +196,74 @@ var ReactLayer = (function (_Component) {
     }, {
         key: 'componentDidUpdate',
         value: function componentDidUpdate() {
-            this.state.show ? this.renderLayer() : this.removePicker();
+            this.state.show ? this.renderLayer() : this.removeLayer();
         }
     }, {
-        key: 'setPosition',
-        value: function setPosition() {
-            var _handlePosition = this.handlePosition();
+        key: 'setDefaultPos',
+        value: function setDefaultPos() {
+            var _getRefPosition = this.getRefPosition();
 
-            var left = _handlePosition.left;
-            var top = _handlePosition.top;
-            var height = _handlePosition.height;
+            var left = _getRefPosition.left;
+            var top = _getRefPosition.top;
+            var height = _getRefPosition.height;
 
             top += height + (document.body.scrollTop || document.documentElement.scrollTop);
+
             return { left: left, top: top };
         }
     }, {
-        key: 'handlePosition',
-        value: function handlePosition() {
-            // Fix for IE8-'s Element.getBoundingClientRect()
-            if ('TextRectangle' in window && !('width' in TextRectangle.prototype)) {
-                Object.defineProperties(TextRectangle.prototype, {
-                    'width': { get: function get() {
-                            return this.right - this.left;
-                        } },
-                    'height': { get: function get() {
-                            return this.bottom - this.top;
-                        } }
-                });
+        key: 'setAddtionPos',
+        value: function setAddtionPos() {
+            var placement = this.props.placement;
+
+            var _getRefPosition2 = this.getRefPosition();
+
+            var left = _getRefPosition2.left;
+            var top = _getRefPosition2.top;
+            var height = _getRefPosition2.height;
+            var width = _getRefPosition2.width;
+
+            var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+            var offsetTop = top + (height + scrollTop);
+            var right = left + width;
+
+            var offsetPos = {};
+            var scrollBottomGap = document.documentElement.clientHeight - top - height - this.layerSize.height > 0 ? true : false,
+                scrollTopGap = top - this.layerSize.height > 0 ? true : false;
+
+            var has = function has(str) {
+                return ~placement.indexOf(str);
+            };
+            if (has('top') || !scrollBottomGap) {
+                offsetPos.top = offsetTop - height - this.layerSize.height;
+            } else if (has('bottom') || !scrollTopGap) {
+                offsetPos.top = offsetTop;
             }
-            return this.getTarget().getBoundingClientRect();
+            if (has('right')) {
+                offsetPos.left = right - this.layerSize.width;
+            } else if (has('left')) {
+                offsetPos.left = left;
+            }
+
+            if (!has('-')) {
+                if (has('top') || has('bottom')) offsetPos.left = left + (width - this.layerSize.width) / 2;
+                if (has('left') || has('right')) {
+                    offsetPos.top = offsetTop + (-height - this.layerSize.height) / 2;
+                    offsetPos.left = has('left') ? left - this.layerSize.width : left + width;
+                }
+            }
+            return offsetPos;
+        }
+    }, {
+        key: 'getRefPosition',
+        value: function getRefPosition() {
+            return this.getTarget() && this.getTarget().getBoundingClientRect();
+        }
+    }, {
+        key: 'getLayerSize',
+        value: function getLayerSize() {
+            var layer = this.popup.getElementsByClassName(this.props.className);
+            return layer.length && layer[0].getBoundingClientRect();
         }
     }, {
         key: 'getTarget',
@@ -202,8 +278,8 @@ var ReactLayer = (function (_Component) {
             return targetEl;
         }
     }, {
-        key: 'removePicker',
-        value: function removePicker() {
+        key: 'removeLayer',
+        value: function removeLayer() {
             if (this.popup) {
                 _reactDom2['default'].unmountComponentAtNode(this.popup);
                 try {
@@ -223,7 +299,7 @@ var ReactLayer = (function (_Component) {
                 }); //abc: this.state.offset
                 var childWrapWithProps = _react2['default'].createElement(
                     'div',
-                    { style: this.state.offset,
+                    { className: this.props.className, style: this.state.offset,
                         onClick: this.onClick.bind(this),
                         onMouseOver: this.onMouseOver.bind(this),
                         onMouseDown: this.onMouseDown.bind(this),
@@ -232,17 +308,24 @@ var ReactLayer = (function (_Component) {
                     childrenWithProps
                 );
                 _reactDom2['default'].render(childWrapWithProps, this.popup);
+                this.layerSize = this.getLayerSize();
             }
         }
     }, {
         key: 'render',
         value: function render() {
-            return this.state.show && _react2['default'].createElement('div', { className: this.props.className, children: null });
+            return null;
         }
     }]);
 
     return ReactLayer;
 })(_react.Component);
+
+ReactLayer.defaultProps = {
+    placement: 'bottom-left',
+    eventIn: 'mouseover',
+    className: 'layer-content'
+};
 
 exports['default'] = ReactLayer;
 module.exports = exports['default'];

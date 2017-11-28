@@ -63,7 +63,7 @@ var App = (function (_Component) {
                 _react2['default'].createElement(
                     'pre',
                     { className: 'demo-code' },
-                    '\n* ReactLayer 组件上的事件由组件自己已处理显隐，使用本组件仅需要处理InBody内children上自己业务需要的事件与显隐\n* props.target [string targetId]: layer show by [eventIn] target\n* props.eventIn  {eventName}         show trigger by eventIn\n* props.eventOut {optional eventName} hide trigger by eventOut form element needn\'t eventOut\n* props.show     {optional boolean}\n* props.onPreBlur {callback function}\n* ReactLayer.eventInner {static boolean}   get or set the event trigger by ReactLayer Inner or Outer\n'
+                    '\n* ReactLayer 组件上的事件由组件自己已处理显隐，使用本组件仅需要处理ReactLayer内children上自己业务需要的事件与显隐\n* props.target [string targetId]: layer show by [eventIn] target\n* props.eventIn  {eventName}         show trigger by eventIn\n* props.eventOut {optional eventName} hide trigger by eventOut form element needn\'t eventOut\n* props.show     {optional boolean}\n* props.onPreBlur {callback function}\n* ReactLayer.eventInner {static boolean}   get or set the event trigger by ReactLayer Inner or Outer\n'
                 ),
                 _react2['default'].createElement('br', null),
                 _react2['default'].createElement('hr', null),
@@ -136,11 +136,16 @@ var App = (function (_Component) {
                     _react2['default'].createElement(
                         'span',
                         { id: 'commonElement', value: this.state.value },
-                        'Common Element'
+                        'Common Element  placement default bottom-left'
+                    ),
+                    _react2['default'].createElement(
+                        'style',
+                        null,
+                        '\n                        .c-layer {\n                            border: 1px solid blue;\n                        }\n\n                        '
                     ),
                     _react2['default'].createElement(
                         ReactLayer,
-                        { eventIn: 'mouseover', eventOut: 'mouseleave', target: 'commonElement', show: show },
+                        { target: 'commonElement', show: show, className: 'c-layer' },
                         _react2['default'].createElement(
                             'div',
                             { style: { backgroundColor: '#fff', 'border': '1px solid #ccc' } },
@@ -167,6 +172,265 @@ var App = (function (_Component) {
                                 null,
                                 'test frame'
                             )
+                        )
+                    )
+                ),
+                _react2['default'].createElement(
+                    'div',
+                    { className: 'demo-item' },
+                    _react2['default'].createElement(
+                        'h5',
+                        null,
+                        'placement bottom-right'
+                    ),
+                    _react2['default'].createElement(
+                        'span',
+                        { style: { textDecoration: 'underline' }, id: 'placementElemBR', value: this.state.value },
+                        'placement demo'
+                    ),
+                    _react2['default'].createElement(
+                        ReactLayer,
+                        { target: 'placementElemBR', show: show, className: 'c-layer', placement: 'bottom-right' },
+                        _react2['default'].createElement(
+                            'div',
+                            { style: { backgroundColor: '#fff', 'border': '1px solid #ccc' } },
+                            '\'left\' ',
+                            _react2['default'].createElement('br', null),
+                            '\'right\'',
+                            _react2['default'].createElement('br', null),
+                            '\'top\'',
+                            _react2['default'].createElement('br', null),
+                            '\'bottom\'',
+                            _react2['default'].createElement('br', null),
+                            '\'left-top\'',
+                            _react2['default'].createElement('br', null),
+                            '\'left-bottom\'',
+                            _react2['default'].createElement('br', null),
+                            '\'right-top\'',
+                            _react2['default'].createElement('br', null),
+                            '\'right-bottom\''
+                        )
+                    )
+                ),
+                _react2['default'].createElement(
+                    'div',
+                    { className: 'demo-item' },
+                    _react2['default'].createElement(
+                        'h5',
+                        null,
+                        'placement top-left'
+                    ),
+                    _react2['default'].createElement(
+                        'span',
+                        { style: { textDecoration: 'underline' }, id: 'placementElemTL', value: this.state.value },
+                        'placement demo'
+                    ),
+                    _react2['default'].createElement(
+                        ReactLayer,
+                        { target: 'placementElemTL', show: show, className: 'c-layer', placement: 'top-left' },
+                        _react2['default'].createElement(
+                            'div',
+                            { style: { backgroundColor: '#fff', 'border': '1px solid #ccc' } },
+                            '\'left\' ',
+                            _react2['default'].createElement('br', null),
+                            '\'right\'',
+                            _react2['default'].createElement('br', null),
+                            '\'top\'',
+                            _react2['default'].createElement('br', null),
+                            '\'bottom\'',
+                            _react2['default'].createElement('br', null),
+                            '\'left-top\'',
+                            _react2['default'].createElement('br', null),
+                            '\'left-bottom\'',
+                            _react2['default'].createElement('br', null),
+                            '\'right-top\'',
+                            _react2['default'].createElement('br', null),
+                            '\'right-bottom\''
+                        )
+                    )
+                ),
+                _react2['default'].createElement(
+                    'div',
+                    { className: 'demo-item' },
+                    _react2['default'].createElement(
+                        'h5',
+                        null,
+                        'placement top-right'
+                    ),
+                    _react2['default'].createElement(
+                        'span',
+                        { style: { textDecoration: 'underline' }, id: 'placementElemTR', value: this.state.value },
+                        'placement demo'
+                    ),
+                    _react2['default'].createElement(
+                        ReactLayer,
+                        { target: 'placementElemTR', show: show, className: 'c-layer', placement: 'top-right' },
+                        _react2['default'].createElement(
+                            'div',
+                            { style: { backgroundColor: '#fff', 'border': '1px solid #ccc' } },
+                            '\'left\' ',
+                            _react2['default'].createElement('br', null),
+                            '\'right\'',
+                            _react2['default'].createElement('br', null),
+                            '\'top\'',
+                            _react2['default'].createElement('br', null),
+                            '\'bottom\'',
+                            _react2['default'].createElement('br', null),
+                            '\'left-top\'',
+                            _react2['default'].createElement('br', null),
+                            '\'left-bottom\'',
+                            _react2['default'].createElement('br', null),
+                            '\'right-top\'',
+                            _react2['default'].createElement('br', null),
+                            '\'right-bottom\''
+                        )
+                    )
+                ),
+                _react2['default'].createElement(
+                    'div',
+                    { className: 'demo-item' },
+                    _react2['default'].createElement(
+                        'h5',
+                        null,
+                        'placement left'
+                    ),
+                    _react2['default'].createElement(
+                        'span',
+                        { style: { textDecoration: 'underline' }, id: 'placementElemLeft', value: this.state.value },
+                        'placement demo'
+                    ),
+                    _react2['default'].createElement(
+                        ReactLayer,
+                        { target: 'placementElemLeft', show: show, className: 'c-layer', placement: 'left' },
+                        _react2['default'].createElement(
+                            'div',
+                            { style: { backgroundColor: '#fff', 'border': '1px solid #ccc' } },
+                            '\'left\' ',
+                            _react2['default'].createElement('br', null),
+                            '\'right\'',
+                            _react2['default'].createElement('br', null),
+                            '\'top\'',
+                            _react2['default'].createElement('br', null),
+                            '\'bottom\'',
+                            _react2['default'].createElement('br', null),
+                            '\'left-top\'',
+                            _react2['default'].createElement('br', null),
+                            '\'left-bottom\'',
+                            _react2['default'].createElement('br', null),
+                            '\'right-top\'',
+                            _react2['default'].createElement('br', null),
+                            '\'right-bottom\''
+                        )
+                    )
+                ),
+                _react2['default'].createElement(
+                    'div',
+                    { className: 'demo-item' },
+                    _react2['default'].createElement(
+                        'h5',
+                        null,
+                        'placement right'
+                    ),
+                    _react2['default'].createElement(
+                        'span',
+                        { style: { textDecoration: 'underline' }, id: 'placementElemRight', value: this.state.value },
+                        'placement demo'
+                    ),
+                    _react2['default'].createElement(
+                        ReactLayer,
+                        { target: 'placementElemRight', show: show, className: 'c-layer', placement: 'right' },
+                        _react2['default'].createElement(
+                            'div',
+                            { style: { backgroundColor: '#fff', 'border': '1px solid #ccc' } },
+                            '\'left\' ',
+                            _react2['default'].createElement('br', null),
+                            '\'right\'',
+                            _react2['default'].createElement('br', null),
+                            '\'top\'',
+                            _react2['default'].createElement('br', null),
+                            '\'bottom\'',
+                            _react2['default'].createElement('br', null),
+                            '\'left-top\'',
+                            _react2['default'].createElement('br', null),
+                            '\'left-bottom\'',
+                            _react2['default'].createElement('br', null),
+                            '\'right-top\'',
+                            _react2['default'].createElement('br', null),
+                            '\'right-bottom\''
+                        )
+                    )
+                ),
+                _react2['default'].createElement(
+                    'div',
+                    { className: 'demo-item' },
+                    _react2['default'].createElement(
+                        'h5',
+                        null,
+                        'placement top'
+                    ),
+                    _react2['default'].createElement(
+                        'span',
+                        { style: { textDecoration: 'underline' }, id: 'placementElemTop', value: this.state.value },
+                        'placement demo'
+                    ),
+                    _react2['default'].createElement(
+                        ReactLayer,
+                        { target: 'placementElemTop', show: show, className: 'c-layer', placement: 'top' },
+                        _react2['default'].createElement(
+                            'div',
+                            { style: { backgroundColor: '#fff', 'border': '1px solid #ccc' } },
+                            '\'left\' ',
+                            _react2['default'].createElement('br', null),
+                            '\'right\'',
+                            _react2['default'].createElement('br', null),
+                            '\'top\'',
+                            _react2['default'].createElement('br', null),
+                            '\'bottom\'',
+                            _react2['default'].createElement('br', null),
+                            '\'left-top\'',
+                            _react2['default'].createElement('br', null),
+                            '\'left-bottom\'',
+                            _react2['default'].createElement('br', null),
+                            '\'right-top\'',
+                            _react2['default'].createElement('br', null),
+                            '\'right-bottom\''
+                        )
+                    )
+                ),
+                _react2['default'].createElement(
+                    'div',
+                    { className: 'demo-item' },
+                    _react2['default'].createElement(
+                        'h5',
+                        null,
+                        'placement bottom'
+                    ),
+                    _react2['default'].createElement(
+                        'span',
+                        { style: { textDecoration: 'underline' }, id: 'placementElemBottom', value: this.state.value },
+                        'placement demo'
+                    ),
+                    _react2['default'].createElement(
+                        ReactLayer,
+                        { target: 'placementElemBottom', show: show, className: 'c-layer', placement: 'bottom' },
+                        _react2['default'].createElement(
+                            'div',
+                            { style: { backgroundColor: '#fff', 'border': '1px solid #ccc' } },
+                            '\'left\' ',
+                            _react2['default'].createElement('br', null),
+                            '\'right\'',
+                            _react2['default'].createElement('br', null),
+                            '\'top\'',
+                            _react2['default'].createElement('br', null),
+                            '\'bottom\'',
+                            _react2['default'].createElement('br', null),
+                            '\'left-top\'',
+                            _react2['default'].createElement('br', null),
+                            '\'left-bottom\'',
+                            _react2['default'].createElement('br', null),
+                            '\'right-top\'',
+                            _react2['default'].createElement('br', null),
+                            '\'right-bottom\''
                         )
                     )
                 )

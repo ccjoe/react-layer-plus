@@ -30,18 +30,6 @@ var mixStyle = function mixStyle(offset) {
     return _extends({ position: 'absolute', zIndex: 100 }, offset);
 };
 
-var placementMap = {
-    't': 'top',
-    'b': 'bottom',
-    'l': 'left',
-    'r': 'right',
-
-    'tl': 'top-left',
-    'bl': 'bottom-left',
-    'tr': 'top-right',
-    'br': 'bottom-right'
-};
-
 // Fix for IE8-'s Element.getBoundingClientRect()
 if ('TextRectangle' in window && !('width' in TextRectangle.prototype)) {
     Object.defineProperties(TextRectangle.prototype, {
@@ -62,9 +50,13 @@ var ReactLayer = (function (_Component) {
      * ReactLayer 组件上的事件由组件自己已处理显隐，使用本组件仅需要处理InBody内children上自己业务需要的事件与显隐
      * props.target [string targetId]: layer show by [eventIn] target
      * props.eventIn  {eventName}         show trigger by eventIn
+     * //if eventIn is mouseover, eventOut mouseleave default
+     * //if target is form element ,eventOut is blur default
      * props.eventOut {optional eventName} hide trigger by eventOut form element needn't eventOut
      * props.show     {optional boolean}
      * props.onPreBlur {callback function}
+     * props.onEventIn {callback function}
+     * props.onEventOut {callback function}
      * props.placement {string} default 'bottom-left'  left right top bottom top-left bottom-left top-right bottom-right
      * ReactLayer.eventInner {static boolean}   get or set the event trigger by ReactLayer Inner or Outer
      */
@@ -98,21 +90,36 @@ var ReactLayer = (function (_Component) {
         value: function componentDidMount() {
             this.createBodyWrapper();
             this.state.show ? this.renderLayer() : this.removeLayer();
-            if (!this.props.inline) {
-                this.state.offset.width = this.props.children.clientWidth;
+
+            var _props = this.props;
+            var inline = _props.inline;
+            var eventIn = _props.eventIn;
+            var eventOut = _props.eventOut;
+            var onEventIn = _props.onEventIn;
+            var onEventOut = _props.onEventOut;
+            var children = _props.children;
+
+            if (!inline) {
+                this.state.offset.width = children.clientWidth;
                 this.setState(this.state);
             }
             var that = this;
             var target = that.getTarget();
             if (target) {
-                target.addEventListener(that.props.eventIn, function () {
+                target.addEventListener(eventIn, function () {
+                    onEventIn && onEventIn();
                     that.show(true);
                 });
-                if (that.props.eventIn === 'mouseover') {
-                    target.addEventListener('mouseleave', function () {
+                if (eventIn === 'mouseover') {
+                    target.addEventListener(eventOut || 'mouseleave', function () {
                         that.timeId = setTimeout(function () {
                             that.show(false);
                         }, 200);
+                    });
+                } else if (eventOut) {
+                    target.addEventListener(eventOut, function () {
+                        that.show(false);
+                        onEventOut && onEventOut();
                     });
                 }
                 if (that.targetIsInput(target)) {
@@ -317,7 +324,7 @@ var ReactLayer = (function (_Component) {
 
 ReactLayer.defaultProps = {
     placement: 'bottom-left',
-    eventIn: 'click',
+    eventIn: 'mouseover',
     className: 'layer-content'
 };
 

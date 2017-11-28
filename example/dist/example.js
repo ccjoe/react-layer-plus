@@ -145,7 +145,7 @@ var App = (function (_Component) {
                     ),
                     _react2['default'].createElement(
                         ReactLayer,
-                        { eventIn: 'mouseover', eventOut: 'mouseleave', target: 'commonElement', show: show, className: 'c-layer' },
+                        { target: 'commonElement', show: show, className: 'c-layer' },
                         _react2['default'].createElement(
                             'div',
                             { style: { backgroundColor: '#fff', 'border': '1px solid #ccc' } },
@@ -190,7 +190,7 @@ var App = (function (_Component) {
                     ),
                     _react2['default'].createElement(
                         ReactLayer,
-                        { eventIn: 'mouseover', eventOut: 'mouseleave', target: 'placementElemBR', show: show, className: 'c-layer', placement: 'bottom-right' },
+                        { target: 'placementElemBR', show: show, className: 'c-layer', placement: 'bottom-right' },
                         _react2['default'].createElement(
                             'div',
                             { style: { backgroundColor: '#fff', 'border': '1px solid #ccc' } },
@@ -227,7 +227,7 @@ var App = (function (_Component) {
                     ),
                     _react2['default'].createElement(
                         ReactLayer,
-                        { target: 'placementElemTL', eventIn: 'mouseover', eventOut: 'mouseleave', show: show, className: 'c-layer', placement: 'top-left' },
+                        { target: 'placementElemTL', show: show, className: 'c-layer', placement: 'top-left' },
                         _react2['default'].createElement(
                             'div',
                             { style: { backgroundColor: '#fff', 'border': '1px solid #ccc' } },
@@ -264,7 +264,7 @@ var App = (function (_Component) {
                     ),
                     _react2['default'].createElement(
                         ReactLayer,
-                        { target: 'placementElemTR', eventIn: 'mouseover', eventOut: 'mouseleave', show: show, className: 'c-layer', placement: 'top-right' },
+                        { target: 'placementElemTR', show: show, className: 'c-layer', placement: 'top-right' },
                         _react2['default'].createElement(
                             'div',
                             { style: { backgroundColor: '#fff', 'border': '1px solid #ccc' } },
@@ -301,7 +301,7 @@ var App = (function (_Component) {
                     ),
                     _react2['default'].createElement(
                         ReactLayer,
-                        { target: 'placementElemLeft', eventIn: 'mouseover', eventOut: 'mouseleave', show: show, className: 'c-layer', placement: 'left' },
+                        { target: 'placementElemLeft', show: show, className: 'c-layer', placement: 'left' },
                         _react2['default'].createElement(
                             'div',
                             { style: { backgroundColor: '#fff', 'border': '1px solid #ccc' } },
@@ -338,7 +338,7 @@ var App = (function (_Component) {
                     ),
                     _react2['default'].createElement(
                         ReactLayer,
-                        { target: 'placementElemRight', eventIn: 'mouseover', eventOut: 'mouseleave', show: show, className: 'c-layer', placement: 'right' },
+                        { target: 'placementElemRight', show: show, className: 'c-layer', placement: 'right' },
                         _react2['default'].createElement(
                             'div',
                             { style: { backgroundColor: '#fff', 'border': '1px solid #ccc' } },
@@ -375,7 +375,7 @@ var App = (function (_Component) {
                     ),
                     _react2['default'].createElement(
                         ReactLayer,
-                        { target: 'placementElemTop', eventIn: 'mouseover', eventOut: 'mouseleave', show: show, className: 'c-layer', placement: 'top' },
+                        { target: 'placementElemTop', show: show, className: 'c-layer', placement: 'top' },
                         _react2['default'].createElement(
                             'div',
                             { style: { backgroundColor: '#fff', 'border': '1px solid #ccc' } },
@@ -412,7 +412,7 @@ var App = (function (_Component) {
                     ),
                     _react2['default'].createElement(
                         ReactLayer,
-                        { target: 'placementElemBottom', eventIn: 'mouseover', eventOut: 'mouseleave', show: show, className: 'c-layer', placement: 'bottom' },
+                        { target: 'placementElemBottom', show: show, className: 'c-layer', placement: 'bottom' },
                         _react2['default'].createElement(
                             'div',
                             { style: { backgroundColor: '#fff', 'border': '1px solid #ccc' } },

@@ -32,9 +32,11 @@ npm install react-layer-plus --save
 __EXPLAIN USAGE HERE__
 
 ```
-var ReactLayerPlus = require('react-layer-plus');
+var ReactLayer = require('react-layer-plus');
 
-<ReactLayerPlus>Example</ReactLayerPlus>
+<ReactLayer target='commonElement'>
+    <div> blabla bala.... </div>
+</ReactLayer>
 ```
 
 ## Development (`src`, `lib` and the build process)

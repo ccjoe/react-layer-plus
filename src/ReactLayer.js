@@ -42,17 +42,24 @@ class ReactLayer extends Component {
         if (!this.hasBodyWrapper()) {
             this.popup = document.createElement('div')
             this.popup.className = 'layer-wrapper'
+            // this.popup.refid = this.props.target
             document.body.appendChild(this.popup)
         }
     }
 
     hasBodyWrapper() {
-        return this.popup && document.body.getElementsByClassName(this.popup.className).length
+        var popupExist = this.popup && this.popup.className && document.body.getElementsByClassName(this.popup.className)
+        if(this.popup && popupExist.length){
+            if(this.popup.children.length){
+                return true
+            }
+            document.body.removeChild(popupExist[0])
+        }
+        return false
     }
 
     componentDidMount() {
         this.createBodyWrapper()
-        this.state.show ? this.renderLayer() : this.removeLayer()
 
         var {inline, eventIn, eventOut, onEventIn, onEventOut, children} = this.props
         if (!inline) {
@@ -137,11 +144,11 @@ class ReactLayer extends Component {
         return target.tagName.toLowerCase() === 'input'
     }
 
-    componentWillReceiveProps(nextProps) {
+    /* componentWillReceiveProps(nextProps) {
         if (nextProps.show !== this.state.show) {
             this.show(nextProps.show)
         }
-    }
+    } */
 
     componentDidUpdate() {
         this.state.show ? this.renderLayer() : this.removeLayer()
@@ -208,18 +215,21 @@ class ReactLayer extends Component {
     }
 
     removeLayer() {
-        if (this.popup) {
-            ReactDOM.unmountComponentAtNode(this.popup)
+        if (this.popup && /* (this.popup.refid === this.props.target) && */ this.hasBodyWrapper()) {
             try {
+                ReactDOM.unmountComponentAtNode(this.popup)
                 document.body.removeChild(this.popup)
-            } catch (e) { }
+            }catch (e) {
+                this.popup = null
+            }
         }
     }
 
     renderLayer() {
         if (!this.hasBodyWrapper()) {
-            this.createBodyWrapper()
+            this.removeLayer()
         }
+        this.createBodyWrapper()
         if (this.props.children) {
             const childrenWithProps = React.Children.map(this.props.children, child => React.cloneElement(child, {})) //abc: this.state.offset
             const childWrapWithProps = <div className={this.props.className} style={this.state.offset}

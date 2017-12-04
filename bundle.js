@@ -193,13 +193,13 @@ var ReactLayer = (function (_Component) {
         value: function targetIsInput(target) {
             return target.tagName.toLowerCase() === 'input';
         }
-
-        /* componentWillReceiveProps(nextProps) {
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
             if (nextProps.show !== this.state.show) {
-                this.show(nextProps.show)
+                this.show(nextProps.show);
             }
-        } */
-
+        }
     }, {
         key: 'componentDidUpdate',
         value: function componentDidUpdate() {
@@ -287,7 +287,7 @@ var ReactLayer = (function (_Component) {
     }, {
         key: 'removeLayer',
         value: function removeLayer() {
-            if (this.popup && /* (this.popup.refid === this.props.target) && */this.hasBodyWrapper()) {
+            if (this.popup) {
                 try {
                     _reactDom2['default'].unmountComponentAtNode(this.popup);
                     document.body.removeChild(this.popup);

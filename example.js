@@ -18,8 +18,31 @@ var _react2 = _interopRequireDefault(_react);
 var ReactDOM = require('react-dom');
 var ReactLayer = require('react-layer-plus');
 
-var App = (function (_Component) {
-    _inherits(App, _Component);
+var DemoElem = (function (_Component) {
+    _inherits(DemoElem, _Component);
+
+    function DemoElem() {
+        _classCallCheck(this, DemoElem);
+
+        _get(Object.getPrototypeOf(DemoElem.prototype), 'constructor', this).apply(this, arguments);
+    }
+
+    _createClass(DemoElem, [{
+        key: 'render',
+        value: function render() {
+            return _react2['default'].createElement(
+                'button',
+                { onClick: this.props.onClick.bind(this) },
+                '子组件区域'
+            );
+        }
+    }]);
+
+    return DemoElem;
+})(_react.Component);
+
+var App = (function (_Component2) {
+    _inherits(App, _Component2);
 
     function App(props) {
         _classCallCheck(this, App);
@@ -49,6 +72,16 @@ var App = (function (_Component) {
         key: 'onClickC',
         value: function onClickC() {
             this.setState({ formElementValue: '有效区域 (not autoHide)', formElementShow: true });
+        }
+    }, {
+        key: 'onClickD',
+        value: function onClickD() {
+            this.setState({ formElementValue: '子组件区域 hide:false', formElementShow: true });
+        }
+    }, {
+        key: 'onClickE',
+        value: function onClickE() {
+            this.setState({ formElementValue: '子组件区域 hide:true', formElementShow: false });
         }
     }, {
         key: 'render',
@@ -121,7 +154,9 @@ var App = (function (_Component) {
                                 { onClick: this.onClickC.bind(this) },
                                 '有效区域 (not autoHide)'
                             ),
-                            _react2['default'].createElement('br', null)
+                            _react2['default'].createElement('br', null),
+                            _react2['default'].createElement(DemoElem, { onClick: this.onClickD.bind(this) }),
+                            _react2['default'].createElement(DemoElem, { onClick: this.onClickE.bind(this) })
                         )
                     )
                 ),

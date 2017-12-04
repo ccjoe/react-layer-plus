@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
 var ReactDOM = require('react-dom');
 var ReactLayer = require('react-layer-plus');
+class DemoElem extends Component {
+    render(){
+        return  <button onClick={this.props.onClick.bind(this)}>子组件区域</button>
+    }
+}
 
 class App extends Component {
     constructor(props) {
@@ -23,6 +28,12 @@ class App extends Component {
     }
     onClickC(){
         this.setState({formElementValue: '有效区域 (not autoHide)', formElementShow: true})
+    }
+    onClickD(){
+        this.setState({formElementValue: '子组件区域 hide:false', formElementShow: true})
+    }
+    onClickE(){
+        this.setState({formElementValue: '子组件区域 hide:true', formElementShow: false})
     }
     render() {
         let { formElementShow, show } = this.state;
@@ -54,6 +65,8 @@ class App extends Component {
                             <button onClick={this.onClickA.bind(this)}>无效区域</button><br/>
                             <button onClick={this.onClickB.bind(this)}>有效区域 (autoHide)</button><br/>
                             <button onClick={this.onClickC.bind(this)}>有效区域 (not autoHide)</button><br/>
+                            <DemoElem onClick={this.onClickD.bind(this)}/>
+                            <DemoElem onClick={this.onClickE.bind(this)}/>
                         </div>
                     </ReactLayer>
 				</div>

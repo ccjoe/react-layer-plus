@@ -144,11 +144,11 @@ class ReactLayer extends Component {
         return target.tagName.toLowerCase() === 'input'
     }
 
-    /* componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps) {
         if (nextProps.show !== this.state.show) {
             this.show(nextProps.show)
         }
-    } */
+    }
 
     componentDidUpdate() {
         this.state.show ? this.renderLayer() : this.removeLayer()
@@ -215,7 +215,7 @@ class ReactLayer extends Component {
     }
 
     removeLayer() {
-        if (this.popup && /* (this.popup.refid === this.props.target) && */ this.hasBodyWrapper()) {
+        if (this.popup) {
             try {
                 ReactDOM.unmountComponentAtNode(this.popup)
                 document.body.removeChild(this.popup)

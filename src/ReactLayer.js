@@ -49,8 +49,8 @@ class ReactLayer extends Component {
 
     hasBodyWrapper() {
         var popupExist = this.popup && this.popup.className && document.body.getElementsByClassName(this.popup.className)
-        if(this.popup && popupExist.length){
-            if(this.popup.children.length){
+        if (this.popup && popupExist.length) {
+            if (this.popup.children.length) {
                 return true
             }
             document.body.removeChild(popupExist[0])
@@ -61,7 +61,7 @@ class ReactLayer extends Component {
     componentDidMount() {
         this.createBodyWrapper()
 
-        var {inline, eventIn, eventOut, onEventIn, onEventOut, children} = this.props
+        var { inline, eventIn, eventOut, onEventIn, onEventOut, children } = this.props
         if (!inline) {
             this.state.offset.width = children.clientWidth
             this.setState(this.state)
@@ -79,7 +79,7 @@ class ReactLayer extends Component {
                         that.show(false)
                     }, 200);
                 })
-            }else if(eventOut){
+            } else if (eventOut) {
                 target.addEventListener(eventOut, function () {
                     that.show(false)
                     onEventOut && onEventOut()
@@ -145,7 +145,7 @@ class ReactLayer extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.show !== this.state.show) {
+        if ((nextProps.show !== this.state.show) && this.targetIsInput(this.getTarget())) {
             this.show(nextProps.show)
         }
     }
@@ -169,13 +169,16 @@ class ReactLayer extends Component {
         let right = left + width
 
         let offsetPos = {}
-        let scrollBottomGap = document.documentElement.clientHeight-top-height - this.layerSize.height > 0 ? true : false,
+        if (!this.layerSize) {
+            return offsetPos
+        }
+        let scrollBottomGap = document.documentElement.clientHeight - top - height - this.layerSize.height > 0 ? true : false,
             scrollTopGap = top - this.layerSize.height > 0 ? true : false
 
         let has = str => ~placement.indexOf(str)
-        if (has('top')||!scrollBottomGap) {
+        if (has('top') || !scrollBottomGap) {
             offsetPos.top = offsetTop - height - this.layerSize.height
-        } else if (has('bottom')||!scrollTopGap) {
+        } else if (has('bottom') || !scrollTopGap) {
             offsetPos.top = offsetTop
         }
         if (has('right')) {
@@ -185,10 +188,10 @@ class ReactLayer extends Component {
         }
 
         if (!has('-')) {
-            if(has('top') || has('bottom')) offsetPos.left = left + (width-this.layerSize.width)/2
-            if(has('left') || has('right')) {
-                offsetPos.top = offsetTop + (-height-this.layerSize.height)/2
-                offsetPos.left = has('left') ? left-this.layerSize.width : left+width
+            if (has('top') || has('bottom')) offsetPos.left = left + (width - this.layerSize.width) / 2
+            if (has('left') || has('right')) {
+                offsetPos.top = offsetTop + (-height - this.layerSize.height) / 2
+                offsetPos.left = has('left') ? left - this.layerSize.width : left + width
             }
         }
         return offsetPos
@@ -219,7 +222,7 @@ class ReactLayer extends Component {
             try {
                 ReactDOM.unmountComponentAtNode(this.popup)
                 document.body.removeChild(this.popup)
-            }catch (e) {
+            } catch (e) {
                 this.popup = null
             }
         }

@@ -196,7 +196,7 @@ var ReactLayer = (function (_Component) {
     }, {
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(nextProps) {
-            if (nextProps.show !== this.state.show) {
+            if (nextProps.show !== this.state.show && this.targetIsInput(this.getTarget())) {
                 this.show(nextProps.show);
             }
         }
@@ -235,6 +235,9 @@ var ReactLayer = (function (_Component) {
             var right = left + width;
 
             var offsetPos = {};
+            if (!this.layerSize) {
+                return offsetPos;
+            }
             var scrollBottomGap = document.documentElement.clientHeight - top - height - this.layerSize.height > 0 ? true : false,
                 scrollTopGap = top - this.layerSize.height > 0 ? true : false;
 

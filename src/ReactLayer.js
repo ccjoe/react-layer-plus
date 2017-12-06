@@ -14,13 +14,67 @@ if ('TextRectangle' in window && !('width' in TextRectangle.prototype)) {
     });
 }
 
+/*
+* 频率控制 返回函数连续调用时，fn 执行频率限定为每多少时间执行一次
+* @param fn {function}  需要调用的函数
+* @param delay  {number}    延迟时间，单位毫秒
+* @param immediate  {bool} 给 immediate参数传递false 绑定的函数先执行，而不是delay后后执行。
+* @return {function}实际调用函数
+*/
+/* var throttle = function (fn,delay, immediate, debounce) {
+    var curr = +new Date(),//当前事件
+        last_call = 0,
+        last_exec = 0,
+        timer = null,
+        diff, //时间差
+        context,//上下文
+        args,
+        exec = function () {
+            last_exec = curr;
+            fn.apply(context, args);
+        };
+    return function () {
+        curr= +new Date();
+        context = this,
+        args = arguments,
+        diff = curr - (debounce ? last_call : last_exec) - delay;
+        clearTimeout(timer);
+        if (debounce) {
+            if (immediate) {
+                timer = setTimeout(exec, delay);
+            } else if (diff >= 0) {
+                exec();
+            }
+        } else {
+            if (diff >= 0) {
+                exec();
+            } else if (immediate) {
+                timer = setTimeout(exec, -diff);
+            }
+        }
+        last_call = curr;
+    }
+ }; */
+
+ /*
+ * 空闲控制 返回函数连续调用时，空闲时间必须大于或等于 delay，fn 才会执行
+ * @param fn {function}  要调用的函数
+ * @param delay   {number}    空闲时间
+ * @param immediate  {bool} 给 immediate参数传递false 绑定的函数先执行，而不是delay后后执行。
+ * @return {function}实际调用函数
+ */
+
+/* var debounce = function (fn, delay, immediate) {
+    return throttle(fn, delay, immediate, true);
+}; */
+
 class ReactLayer extends Component {
     /**
      * @memberof ReactLayer
      * ReactLayer 组件上的事件由组件自己已处理显隐，使用本组件仅需要处理InBody内children上自己业务需要的事件与显隐
      * props.target [string targetId]: layer show by [eventIn] target
      * props.eventIn  {eventName}         show trigger by eventIn
-     * //if eventIn is mouseover, eventOut mouseleave default
+     * //if eventIn is mouseenter, eventOut mouseleave default
      * //if target is form element ,eventOut is blur default
      * props.eventOut {optional eventName} hide trigger by eventOut form element needn't eventOut
      * props.show     {optional boolean}
@@ -36,6 +90,7 @@ class ReactLayer extends Component {
             offset: mixStyle(props.offset) || {},		//position
             show: props.show || false
         }
+        // this.showLayer = throttle(this.showLayer, 500, true)
     }
 
     createBodyWrapper() {
@@ -58,25 +113,30 @@ class ReactLayer extends Component {
         return false
     }
 
+    showLayer(){
+        var { onEventIn } = this.props
+        onEventIn && onEventIn()
+        this.show(true)
+    }
+
     componentDidMount() {
         this.createBodyWrapper()
 
-        var { inline, eventIn, eventOut, onEventIn, onEventOut, children } = this.props
+        var { inline, eventIn, eventOut, onEventOut, children } = this.props
         if (!inline) {
             this.state.offset.width = children.clientWidth
             this.setState(this.state)
         }
         var that = this
         var target = that.getTarget()
+
+
         if (target) {
-            target.addEventListener(eventIn, function () {
-                onEventIn && onEventIn()
-                that.show(true)
-            })
-            if (eventIn === 'mouseover') {
+            target.addEventListener(eventIn, this.showLayer.bind(this))
+            if (eventIn === 'mouseenter') {
                 target.addEventListener(eventOut || 'mouseleave', function () {
                     that.timeId = setTimeout(function () {
-                        that.show(false)
+                        that.timeId && that.show(false)
                     }, 200);
                 })
             } else if (eventOut) {
@@ -108,6 +168,7 @@ class ReactLayer extends Component {
     onMouseOver() {
         if (this.timeId) {
             clearTimeout(this.timeId)
+            this.timeId = null
         }
     }
 
@@ -141,7 +202,7 @@ class ReactLayer extends Component {
     }
 
     targetIsInput(target) {
-        return target.tagName.toLowerCase() === 'input'
+        return target && target.tagName && target.tagName.toLowerCase() === 'input'
     }
 
     componentWillReceiveProps(nextProps) {
@@ -218,13 +279,10 @@ class ReactLayer extends Component {
     }
 
     removeLayer() {
-        if (this.popup) {
-            try {
-                ReactDOM.unmountComponentAtNode(this.popup)
-                document.body.removeChild(this.popup)
-            } catch (e) {
-                this.popup = null
-            }
+        if (this.popup && this.refs.childWrapWithProps) {
+            // ReactDOM.unmountComponentAtNode(this.popup)
+            document.body.removeChild(this.popup)
+            this.popup = null
         }
     }
 
@@ -248,12 +306,12 @@ class ReactLayer extends Component {
     }
 
     render() {
-        return null
+        return <div ref="childWrapWithProps"/>
     }
 }
 ReactLayer.defaultProps = {
     placement: 'bottom-left',
-    eventIn: 'mouseover',
+    eventIn: 'mouseenter',
     className: 'layer-content'
 }
 

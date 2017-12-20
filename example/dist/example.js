@@ -166,6 +166,41 @@ var App = (function (_Component2) {
                     _react2['default'].createElement(
                         'h5',
                         null,
+                        'layer callback'
+                    ),
+                    _react2['default'].createElement('input', { id: 'formElementCallback', onChange: function () {} }),
+                    _react2['default'].createElement(
+                        ReactLayer,
+                        { eventIn: 'click', onEventIn: function (e) {
+                                return console.log('onEventIn', e);
+                            }, onEventOut: function (e, inner) {
+                                return console.log('onEventOut', e, inner);
+                            }, target: 'formElementCallback' },
+                        _react2['default'].createElement(
+                            'div',
+                            { onClick: function () {
+                                    console.log('click onEventIn onEventOut');
+                                }, style: { backgroundColor: '#fff', 'border': '1px solid #ccc', padding: 10 } },
+                            _react2['default'].createElement(
+                                'span',
+                                { onClick: function () {
+                                        console.log('click onEventIn onEventOut 3');
+                                    } },
+                                'CallBack: onEventIn onEventOut, pls visit console log'
+                            ),
+                            _react2['default'].createElement('br', null),
+                            'onEventIn={(e) => console.log(e)}',
+                            _react2['default'].createElement('br', null),
+                            'onEventOut={(e) => console.log(e)}'
+                        )
+                    )
+                ),
+                _react2['default'].createElement(
+                    'div',
+                    { className: 'demo-item' },
+                    _react2['default'].createElement(
+                        'h5',
+                        null,
                         'relate target with Form common element'
                     ),
                     _react2['default'].createElement(

@@ -72,6 +72,22 @@ class App extends Component {
 				</div>
 
                 <div className="demo-item">
+					<h5>layer callback</h5>
+					<input id="formElementCallback"  onChange={function(){}}/>
+                    <ReactLayer eventIn="click" onEventIn={(e) => console.log('onEventIn', e)} onEventOut={(e, inner) => console.log('onEventOut',e, inner)} target='formElementCallback'>
+                        <div  onClick={function(){console.log('click onEventIn onEventOut')}} style={{backgroundColor: '#fff', 'border': '1px solid #ccc', padding:10}}>
+                            <span   onClick={function(){console.log('click onEventIn onEventOut 3')}} >CallBack: onEventIn onEventOut, pls visit console log</span>
+
+                            <br/>
+                            {`onEventIn={(e) => console.log(e)}`}
+                            <br/>
+                            {`onEventOut={(e) => console.log(e)}`}
+                        </div>
+                    </ReactLayer>
+				</div>
+
+
+                <div className="demo-item">
 					<h5>relate target with Form common element</h5>
 					<span id="commonElement" value={this.state.value}>Common Element  placement default bottom-left</span>
                     <style>

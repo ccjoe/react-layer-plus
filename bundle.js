@@ -111,7 +111,7 @@ var ReactLayer = (function (_Component) {
      * props.onEventIn {callback function}
      * props.onEventOut {callback function}
      * props.placement {string} default 'bottom-left'  left right top bottom top-left bottom-left top-right bottom-right
-     * ReactLayer.eventInner {static boolean}   get or set the event trigger by ReactLayer Inner or Outer
+     * ReactLayer.eventInner {static boolean}   get or set the blur event trigger by ReactLayer Inner or Outer
      */
 
     function ReactLayer(props) {
@@ -123,6 +123,12 @@ var ReactLayer = (function (_Component) {
             show: props.show || false
         };
         // this.showLayer = throttle(this.showLayer, 500, true)
+        this.eventInner = false;
+        this.onClick = this.onClick.bind(this);
+        this.onMouseOver = this.onMouseOver.bind(this);
+        this.onMouseDown = this.onMouseDown.bind(this);
+        this.onMouseLeave = this.onMouseLeave.bind(this);
+        this.showLayer = this.showLayer.bind(this);
     }
 
     _createClass(ReactLayer, [{
@@ -149,10 +155,10 @@ var ReactLayer = (function (_Component) {
         }
     }, {
         key: 'showLayer',
-        value: function showLayer() {
+        value: function showLayer(e) {
             var onEventIn = this.props.onEventIn;
 
-            onEventIn && onEventIn();
+            onEventIn && onEventIn(e, this);
             this.show(true);
         }
     }, {
@@ -175,7 +181,7 @@ var ReactLayer = (function (_Component) {
             var target = that.getTarget();
 
             if (target) {
-                target.addEventListener(eventIn, this.showLayer.bind(this));
+                target.addEventListener(eventIn, this.showLayer);
                 if (eventIn === 'mouseenter') {
                     target.addEventListener(eventOut || 'mouseleave', function () {
                         that.timeId = setTimeout(function () {
@@ -183,17 +189,20 @@ var ReactLayer = (function (_Component) {
                         }, 200);
                     });
                 } else if (eventOut) {
-                    target.addEventListener(eventOut, function () {
+                    target.addEventListener(eventOut, function (e) {
+                        onEventOut && onEventOut(e, that);
                         that.show(false);
-                        onEventOut && onEventOut();
                     });
                 }
                 if (that.targetIsInput(target)) {
-                    target.addEventListener('blur', function () {
+                    var blurCb = function blurCb(e) {
                         if (!that.eventInner) {
+                            onEventOut && onEventOut(e, that);
                             that.setState({ show: false });
                         }
-                    });
+                    };
+                    target.removeEventListener('blur', blurCb, false);
+                    target.addEventListener('blur', blurCb, false);
                 }
             }
         }
@@ -305,10 +314,10 @@ var ReactLayer = (function (_Component) {
             var has = function has(str) {
                 return ~placement.indexOf(str);
             };
-            if (has('top') || !scrollBottomGap) {
-                offsetPos.top = offsetTop - height - this.layerSize.height;
-            } else if (has('bottom') || !scrollTopGap) {
+            if (has('bottom') || !scrollTopGap) {
                 offsetPos.top = offsetTop;
+            } else if (has('top') || !scrollBottomGap) {
+                offsetPos.top = offsetTop - height - this.layerSize.height;
             }
             if (has('right')) {
                 offsetPos.left = right - this.layerSize.width;
@@ -352,7 +361,7 @@ var ReactLayer = (function (_Component) {
         key: 'removeLayer',
         value: function removeLayer() {
             if (this.popup && this.refs.childWrapWithProps) {
-                // ReactDOM.unmountComponentAtNode(this.popup)
+                _reactDom2['default'].unmountComponentAtNode(this.popup);
                 document.body.removeChild(this.popup);
                 this.popup = null;
             }
@@ -371,10 +380,10 @@ var ReactLayer = (function (_Component) {
                 var childWrapWithProps = _react2['default'].createElement(
                     'div',
                     { className: this.props.className, style: this.state.offset,
-                        onClick: this.onClick.bind(this),
-                        onMouseOver: this.onMouseOver.bind(this),
-                        onMouseDown: this.onMouseDown.bind(this),
-                        onMouseLeave: this.onMouseLeave.bind(this)
+                        onClick: this.onClick,
+                        onMouseOver: this.onMouseOver,
+                        onMouseDown: this.onMouseDown,
+                        onMouseLeave: this.onMouseLeave
                     },
                     childrenWithProps
                 );

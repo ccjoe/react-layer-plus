@@ -142,7 +142,7 @@ class ReactLayer extends Component {
                 target.addEventListener(eventOut || 'mouseleave', function () {
                     that.timeId = setTimeout(function () {
                         that.timeId && that.show(false)
-                    }, 200);
+                    }, 100);
                 })
             } else if (eventOut) {
                 target.addEventListener(eventOut, function (e) {
@@ -288,7 +288,7 @@ class ReactLayer extends Component {
 
     removeLayer() {
         if (this.popup && this.refs.childWrapWithProps) {
-            ReactDOM.unmountComponentAtNode(this.popup)
+            // ReactDOM.unmountComponentAtNode(this.popup)
             document.body.removeChild(this.popup)
             this.popup = null
         }

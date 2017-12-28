@@ -186,7 +186,7 @@ var ReactLayer = (function (_Component) {
                     target.addEventListener(eventOut || 'mouseleave', function () {
                         that.timeId = setTimeout(function () {
                             that.timeId && that.show(false);
-                        }, 200);
+                        }, 100);
                     });
                 } else if (eventOut) {
                     target.addEventListener(eventOut, function (e) {
@@ -361,7 +361,7 @@ var ReactLayer = (function (_Component) {
         key: 'removeLayer',
         value: function removeLayer() {
             if (this.popup && this.refs.childWrapWithProps) {
-                _reactDom2['default'].unmountComponentAtNode(this.popup);
+                // ReactDOM.unmountComponentAtNode(this.popup)
                 document.body.removeChild(this.popup);
                 this.popup = null;
             }

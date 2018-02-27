@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 
 
+var mixStyle = function (offset) {
+    return Object.assign({ position: 'absolute', zIndex: 100 }, offset)
+}
+
 // Fix for IE8-'s Element.getBoundingClientRect()
 if ('TextRectangle' in window && !('width' in TextRectangle.prototype)) {
     Object.defineProperties(TextRectangle.prototype, {
@@ -83,7 +87,7 @@ class ReactLayer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            offset: Object.assign({ zIndex: 100 ,position:'absolute'},props.offset),		//position
+            offset: mixStyle(props.offset) || {},		//position
             show: props.show || false
         }
         // this.showLayer = throttle(this.showLayer, 500, true)
@@ -161,7 +165,8 @@ class ReactLayer extends Component {
 
     show(ok) {
         if (ok) {
-            this.setState({show: ok, offset: Object.assign({},this.state.offset,this.setDefaultPos(),this.setAddtionPos())})
+            this.setState({ show: ok, offset: mixStyle(this.setDefaultPos()) })
+            this.setState({ offset: mixStyle(this.setAddtionPos()) })
         } else {
             this.setState({ show: false })
         }

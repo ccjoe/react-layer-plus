@@ -26,10 +26,6 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var mixStyle = function mixStyle(offset) {
-    return _extends({ position: 'absolute', zIndex: 100 }, offset);
-};
-
 // Fix for IE8-'s Element.getBoundingClientRect()
 if ('TextRectangle' in window && !('width' in TextRectangle.prototype)) {
     Object.defineProperties(TextRectangle.prototype, {
@@ -120,7 +116,7 @@ var ReactLayer = (function (_Component) {
 
         _get(Object.getPrototypeOf(ReactLayer.prototype), 'constructor', this).call(this, props);
         this.state = {
-            offset: mixStyle(props.offset) || {}, //position
+            offset: _extends({ zIndex: 100, position: 'absolute' }, props.offset), //position
             show: props.show || false
         };
         // this.showLayer = throttle(this.showLayer, 500, true)
@@ -211,8 +207,7 @@ var ReactLayer = (function (_Component) {
         key: 'show',
         value: function show(ok) {
             if (ok) {
-                this.setState({ show: ok, offset: mixStyle(this.setDefaultPos()) });
-                this.setState({ offset: mixStyle(this.setAddtionPos()) });
+                this.setState({ show: ok, offset: _extends({}, this.state.offset, this.setDefaultPos(), this.setAddtionPos()) });
             } else {
                 this.setState({ show: false });
             }

@@ -1,8 +1,5 @@
 # react-layer-plus
 
-__react layer for salar and lunar, for props and callback to config, ie8 && ie8+__
-__react dependency migrate react from v0.12 to v15.3, then below ie9 is not support__
-
 ## Demo & Examples
 
 Live demo: [https://ccjoe.github.io/react-layer-plus](https://ccjoe.github.io/react-layer-plus)

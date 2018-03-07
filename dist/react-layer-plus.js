@@ -107,6 +107,8 @@ var ReactLayer = (function (_Component) {
      * props.onPreBlur {callback function}
      * props.onEventIn {callback function}
      * props.onEventOut {callback function}
+     * props.css {object} 提供样式控制
+     * props.offset {object} 提供位置样式控制
      * props.placement {string} default 'bottom-left'  left right top bottom top-left bottom-left top-right bottom-right
      * ReactLayer.eventInner {static boolean}   get or set the blur event trigger by ReactLayer Inner or Outer
      */
@@ -375,7 +377,7 @@ var ReactLayer = (function (_Component) {
                 }); //abc: this.state.offset
                 var childWrapWithProps = _react2['default'].createElement(
                     'div',
-                    { className: this.props.className, style: this.state.offset,
+                    { className: this.props.className, style: _extends({}, this.state.offset, this.props.css),
                         onClick: this.onClick,
                         onMouseOver: this.onMouseOver,
                         onMouseDown: this.onMouseDown,

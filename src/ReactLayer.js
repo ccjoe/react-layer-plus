@@ -77,6 +77,8 @@ class ReactLayer extends Component {
      * props.onPreBlur {callback function}
      * props.onEventIn {callback function}
      * props.onEventOut {callback function}
+     * props.css {object} 提供样式控制
+     * props.offset {object} 提供位置样式控制
      * props.placement {string} default 'bottom-left'  left right top bottom top-left bottom-left top-right bottom-right
      * ReactLayer.eventInner {static boolean}   get or set the blur event trigger by ReactLayer Inner or Outer
      */
@@ -296,7 +298,7 @@ class ReactLayer extends Component {
         this.createBodyWrapper()
         if (this.props.children) {
             const childrenWithProps = React.Children.map(this.props.children, child => React.cloneElement(child, {})) //abc: this.state.offset
-            const childWrapWithProps = <div className={this.props.className} style={this.state.offset}
+            const childWrapWithProps = <div className={this.props.className} style={Object.assign({}, this.state.offset, this.props.css)}
                 onClick={this.onClick}
                 onMouseOver={this.onMouseOver}
                 onMouseDown={this.onMouseDown}

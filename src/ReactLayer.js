@@ -1,13 +1,20 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 
-
 // Fix for IE8-'s Element.getBoundingClientRect()
 if ('TextRectangle' in window && !('width' in TextRectangle.prototype)) {
     Object.defineProperties(TextRectangle.prototype, {
-        'width': { get: function () { return this.right - this.left; } },
-        'height': { get: function () { return this.bottom - this.top; } }
-    });
+        width: {
+            get: function() {
+                return this.right - this.left
+            }
+        },
+        height: {
+            get: function() {
+                return this.bottom - this.top
+            }
+        }
+    })
 }
 
 /*
@@ -52,7 +59,7 @@ if ('TextRectangle' in window && !('width' in TextRectangle.prototype)) {
     }
  }; */
 
- /*
+/*
  * 空闲控制 返回函数连续调用时，空闲时间必须大于或等于 delay，fn 才会执行
  * @param fn {function}  要调用的函数
  * @param delay   {number}    空闲时间
@@ -83,9 +90,9 @@ class ReactLayer extends Component {
      * ReactLayer.eventInner {static boolean}   get or set the blur event trigger by ReactLayer Inner or Outer
      */
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
-            offset: Object.assign({ zIndex: 100 ,position:'absolute'},props.offset),		//position
+            offset: Object.assign({ zIndex: 100, position: 'absolute' }, props.offset), //position
             show: props.show || false
         }
         // this.showLayer = throttle(this.showLayer, 500, true)
@@ -107,7 +114,10 @@ class ReactLayer extends Component {
     }
 
     hasBodyWrapper() {
-        var popupExist = this.popup && this.popup.className && document.body.getElementsByClassName(this.popup.className)
+        var popupExist =
+            this.popup &&
+            this.popup.className &&
+            document.body.getElementsByClassName(this.popup.className)
         if (this.popup && popupExist.length) {
             if (this.popup.children.length) {
                 return true
@@ -117,7 +127,7 @@ class ReactLayer extends Component {
         return false
     }
 
-    showLayer(e){
+    showLayer(e) {
         var { onEventIn } = this.props
         onEventIn && onEventIn(e, this)
         this.show(true)
@@ -128,7 +138,7 @@ class ReactLayer extends Component {
 
         var { inline, eventIn, eventOut, onEventOut, children } = this.props
         if (!inline) {
-            this.state.offset.width = children.clientWidth
+            this.state.offset.width = children && children.clientWidth
             this.setState(this.state)
         }
         var that = this
@@ -137,19 +147,19 @@ class ReactLayer extends Component {
         if (target) {
             target.addEventListener(eventIn, this.showLayer)
             if (eventIn === 'mouseenter') {
-                target.addEventListener(eventOut || 'mouseleave', function () {
-                    that.timeId = setTimeout(function () {
+                target.addEventListener(eventOut || 'mouseleave', function() {
+                    that.timeId = setTimeout(function() {
                         that.timeId && that.show(false)
-                    }, 100);
+                    }, 100)
                 })
             } else if (eventOut) {
-                target.addEventListener(eventOut, function (e) {
+                target.addEventListener(eventOut, function(e) {
                     onEventOut && onEventOut(e, that)
                     that.show(false)
                 })
             }
             if (that.targetIsInput(target)) {
-                var blurCb = function (e) {
+                var blurCb = function(e) {
                     if (!that.eventInner) {
                         onEventOut && onEventOut(e, that)
                         that.setState({ show: false })
@@ -163,11 +173,18 @@ class ReactLayer extends Component {
 
     show(ok) {
         if (ok) {
-            this.setState({show: ok, offset: Object.assign({},this.state.offset,this.setDefaultPos(),this.setAddtionPos())})
+            this.setState({
+                show: ok,
+                offset: Object.assign(
+                    {},
+                    this.state.offset,
+                    this.setDefaultPos(),
+                    this.setAddtionPos()
+                )
+            })
         } else {
             this.setState({ show: false })
         }
-
     }
 
     onMouseOver() {
@@ -211,7 +228,7 @@ class ReactLayer extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if ((nextProps.show !== this.state.show) && this.targetIsInput(this.getTarget())) {
+        if (nextProps.show !== this.state.show && this.targetIsInput(this.getTarget())) {
             this.show(nextProps.show)
         }
     }
@@ -221,15 +238,15 @@ class ReactLayer extends Component {
     }
 
     setDefaultPos() {
-        let { left, top, height } = this.getRefPosition();
-        top += (height + (document.body.scrollTop || document.documentElement.scrollTop))
+        let { left, top, height } = this.getRefPosition()
+        top += height + (document.body.scrollTop || document.documentElement.scrollTop)
 
         return { left, top }
     }
 
     setAddtionPos() {
         let { placement } = this.props
-        let { left, top, height, width } = this.getRefPosition();
+        let { left, top, height, width } = this.getRefPosition()
         let scrollTop = document.body.scrollTop || document.documentElement.scrollTop
         let offsetTop = top + (height + scrollTop)
         let right = left + width
@@ -238,13 +255,16 @@ class ReactLayer extends Component {
         if (!this.layerSize) {
             return offsetPos
         }
-        let scrollBottomGap = document.documentElement.clientHeight - top - height - this.layerSize.height > 0 ? true : false,
+        let scrollBottomGap =
+                document.documentElement.clientHeight - top - height - this.layerSize.height > 0
+                    ? true
+                    : false,
             scrollTopGap = top - this.layerSize.height > 0 ? true : false
 
         let has = str => ~placement.indexOf(str)
         if (has('bottom') || !scrollTopGap) {
             offsetPos.top = offsetTop
-        }else if (has('top') || !scrollBottomGap) {
+        } else if (has('top') || !scrollBottomGap) {
             offsetPos.top = offsetTop - height - this.layerSize.height
         }
         if (has('right')) {
@@ -254,7 +274,8 @@ class ReactLayer extends Component {
         }
 
         if (!has('-')) {
-            if (has('top') || has('bottom')) offsetPos.left = left + (width - this.layerSize.width) / 2
+            if (has('top') || has('bottom'))
+                offsetPos.left = left + (width - this.layerSize.width) / 2
             if (has('left') || has('right')) {
                 offsetPos.top = offsetTop + (-height - this.layerSize.height) / 2
                 offsetPos.left = has('left') ? left - this.layerSize.width : left + width
@@ -273,7 +294,8 @@ class ReactLayer extends Component {
     }
 
     getTarget() {
-        var { target } = this.props, targetEl = null
+        var { target } = this.props,
+            targetEl = null
         if (typeof target === 'string') {
             targetEl = document.getElementById(target)
         } else {
@@ -297,21 +319,28 @@ class ReactLayer extends Component {
         }
         this.createBodyWrapper()
         if (this.props.children) {
-            const childrenWithProps = React.Children.map(this.props.children, child => React.cloneElement(child, {})) //abc: this.state.offset
-            const childWrapWithProps = <div className={this.props.className} style={Object.assign({}, this.state.offset, this.props.css)}
-                onClick={this.onClick}
-                onMouseOver={this.onMouseOver}
-                onMouseDown={this.onMouseDown}
-                onMouseLeave={this.onMouseLeave}
-            >{childrenWithProps}
-            </div>
+            const childrenWithProps = React.Children.map(this.props.children, child =>
+                React.cloneElement(child, {})
+            ) //abc: this.state.offset
+            const childWrapWithProps = (
+                <div
+                    className={this.props.className}
+                    style={Object.assign({}, this.state.offset, this.props.css)}
+                    onClick={this.onClick}
+                    onMouseOver={this.onMouseOver}
+                    onMouseDown={this.onMouseDown}
+                    onMouseLeave={this.onMouseLeave}
+                >
+                    {childrenWithProps}
+                </div>
+            )
             ReactDOM.render(childWrapWithProps, this.popup)
             this.layerSize = this.getLayerSize()
         }
     }
 
     render() {
-        return <div ref="childWrapWithProps"/>
+        return <div ref="childWrapWithProps" />
     }
 }
 ReactLayer.defaultProps = {
